@@ -2,4 +2,5 @@
 #define _LIBC_STDDEF_H
 typedef unsigned int size_t;
 typedef unsigned int uintptr_t;
+typedef unsigned int max_align_t;
 #endif
