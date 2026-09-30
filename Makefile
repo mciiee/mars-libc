@@ -2,7 +2,7 @@ CC=clang
 
 BUILD_DIR=build
 
-CFLAGS=-std=c23 -D_LIBC_IMPLEMENTATION
+CFLAGS=-std=c23 -D_LIBC_IMPLEMENTATION -D_LIBC_SYSCALL_WRAPPERS_ENABLE
 CLANG_FLAGS=-target mips -mllvm -disable-mips-delay-filler -mno-abicalls -G 0
 IFLAGS=-Isrc/stdlib -Isrc/syscall
 
