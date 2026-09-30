@@ -8,7 +8,11 @@
 
 void abort(void);
 void exit(int code);
+int atexit(void (*function)(void));
 void* malloc(size_t size);
 void free(void* ptr);
 
+#ifdef _LIBC_IMPLEMENTATION
+#include "malloc.h"
+#endif
 #endif
