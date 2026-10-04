@@ -152,3 +152,8 @@ void mars_exit2(int code) {
   syscall1(SYS_EXIT2, code);
   __builtin_unreachable();
 }
+
+
+void *sbrk(size_t size) {
+  return mars_sbrk(size);
+}

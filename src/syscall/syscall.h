@@ -43,4 +43,7 @@ void mars_print_char(char c);
 char mars_read_char(void);
 _Noreturn void mars_exit2(int code);
 #endif
+#ifdef _LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE
+void *sbrk(size_t size);
+#endif
 #endif
