@@ -7,8 +7,10 @@
 #include "stddef.h"
 
 void abort(void);
-void exit(int code);
+_Noreturn void exit(int code);
 int atexit(void (*function)(void));
+_Noreturn void quick_exit(int code);
+int at_quick_exit(void (*func)(void));
 void* malloc(size_t size);
 void free(void* ptr);
 
