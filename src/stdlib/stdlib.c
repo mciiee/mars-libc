@@ -13,9 +13,10 @@ void abort(void) {
 
 [[noreturn]]
 void exit(int code){
-  for (unsigned int i = 0; i < sizeof(_atExitFuncs)/sizeof(_atExitFuncs[0]); i++) {
-    if (_atExitFuncs[i] != nullptr) {
-      _atExitFuncs[i]();
+  constexpr unsigned int funcNum = sizeof(_atExitFuncs)/sizeof(_atExitFuncs[0]);
+  for (unsigned int i = 1; i <= funcNum; i++) {
+    if (_atExitFuncs[funcNum - i] != nullptr) {
+      _atExitFuncs[funcNum - i]();
     }
   }
   _syscall_exit(code);
@@ -23,7 +24,8 @@ void exit(int code){
 }
 
 int atexit(void (*function)(void)) {
-  for (unsigned int i = 0; i < sizeof(_atExitFuncs)/sizeof(_atExitFuncs[0]); i++) {
+  constexpr unsigned int funcNum = sizeof(_atExitFuncs)/sizeof(_atExitFuncs[0]);
+  for (unsigned int i = 0; i < funcNum; i++) {
     if (_atExitFuncs[i] == nullptr) {
       _atExitFuncs[i] = function;
       return 0;
@@ -34,7 +36,8 @@ int atexit(void (*function)(void)) {
 }
 
 int at_quick_exit(void (*function)(void)) {
-  for (unsigned int i = 0; i < sizeof(_atQuickExitFuncs)/sizeof(_atQuickExitFuncs[0]); i++) {
+  constexpr unsigned int funcNum = sizeof(_atQuickExitFuncs)/sizeof(_atQuickExitFuncs[0]);
+  for (unsigned int i = 0; i < funcNum; i++) {
     if (_atQuickExitFuncs[i] == nullptr) {
       _atQuickExitFuncs[i] = function;
       return 0;
@@ -47,9 +50,10 @@ int at_quick_exit(void (*function)(void)) {
 
 [[noreturn]]
 void quick_exit(int code) {
-  for (unsigned int i = 0; i < sizeof(_atQuickExitFuncs)/sizeof(_atQuickExitFuncs[0]); i++) {
-    if (_atQuickExitFuncs[i] != nullptr) {
-      _atQuickExitFuncs[i]();
+  constexpr unsigned int funcNum = sizeof(_atQuickExitFuncs)/sizeof(_atQuickExitFuncs[0]);
+  for (unsigned int i = 1; i <= funcNum; i++) {
+    if (_atQuickExitFuncs[funcNum - i] != nullptr) {
+      _atQuickExitFuncs[funcNum - i]();
     }
   }
   _syscall_exit(code);
