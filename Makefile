@@ -9,13 +9,24 @@ IFLAGS=-Isrc/stdlib -Isrc/syscall
 
 .PHONY: all
 
-all: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm
+all: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm # $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/string.asm
 
 $(BUILD_DIR)/syscall.asm: src/syscall/syscall.c src/syscall/syscall.h
 	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
 
-$(BUILD_DIR)/stdlib.asm: src/stdlib/stdlib.c src/stdlib/stdlib.h
+$(BUILD_DIR)/stdlib.asm: src/stdlib/stdlib.c src/stdlib/stdlib.h 
 	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
+
+$(BUILD_DIR)/malloc.asm: src/stdlib/malloc.c src/stdlib/malloc.h
+	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
+
+$(BUILD_DIR)/string.asm: src/string/string.c src/string/string.h
+	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
+
+$(BUILD_DIR)/assert.asm: src/assert/assert.c src/assert/assert.h
+	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
+
+
 
 clean: 
 	rm -rf $(BUILD_DIR)/*
