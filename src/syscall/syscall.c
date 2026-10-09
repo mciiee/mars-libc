@@ -153,6 +153,16 @@ void mars_exit2(int code) {
   __builtin_unreachable();
 }
 
+void mars_print_int_hex(int input) {
+  syscall1(SYS_PRINT_INT_HEX, input);
+}
+void mars_print_int_bin(int input) {
+  syscall1(SYS_PRINT_INT_BINARY, input);
+}
+void mars_print_int_unsigned(int input) {
+  syscall1(SYS_PRINT_INT_UNSINGED, input);
+}
+
 
 void *sbrk(size_t size) {
   return mars_sbrk(size);

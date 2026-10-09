@@ -20,6 +20,9 @@ enum SyscallNumber : int {
     SYS_WRITE           = 15,  // write to file ($a0 = fd, $a1 = buffer, $a2 = count)
     SYS_CLOSE           = 16,  // close file ($a0 = fd)
     SYS_EXIT2           = 17,  // terminate with value (result in $a0)
+    SYS_PRINT_INT_HEX   = 34,
+    SYS_PRINT_INT_BINARY = 35,
+    SYS_PRINT_INT_UNSINGED = 36
 };
 
 int syscall(enum SyscallNumber n, ...);
@@ -42,6 +45,9 @@ _Noreturn void mars_exit(void);
 void mars_print_char(char c);
 char mars_read_char(void);
 _Noreturn void mars_exit2(int code);
+void mars_print_int_hex(int input);
+void mars_print_int_bin(int input);
+void mars_print_int_unsigned(int input);
 #endif
 #ifdef _LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE
 void *sbrk(size_t size);
