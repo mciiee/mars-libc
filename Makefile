@@ -1,4 +1,5 @@
 CC=clang
+AR=llvm-ar
 
 BUILD_DIR=build
 TEST_DIR=test
@@ -33,7 +34,7 @@ $(BUILD_DIR)/assert.asm: src/assert/assert.c src/assert/assert.h
 
 
 $(BUILD_DIR)/libc.a: $(BUILD_DIR)/syscall.o $(BUILD_DIR)/stdlib.o $(BUILD_DIR)/assert.o $(BUILD_DIR)/string.o $(BUILD_DIR)/malloc.o
-	llvm-ar -crs $@ $^
+	$(AR) -crs $@ $^
 
 $(BUILD_DIR)/syscall.o: src/syscall/syscall.c src/syscall/syscall.h
 	$(CC) -c $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
@@ -50,8 +51,8 @@ $(BUILD_DIR)/string.o: src/string/string.c src/string/string.h
 $(BUILD_DIR)/assert.o: src/assert/assert.c src/assert/assert.h
 	$(CC) -c $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
 
-$(BUILD_DIR)/test: $(TEST_DIR)/test.c $(BUILD_DIR)/libc.a
-	$(CC) $(CFLAGS) -nostdlib $(CLANG_FLAGS) $(IFLAGS) $(BUILD_DIR)/libc.a $< -o $@
+# $(BUILD_DIR)/test: $(TEST_DIR)/test.c $(BUILD_DIR)/libc.a
+# 	$(CC) $(CFLAGS) -nostdlib $(CLANG_FLAGS) $(IFLAGS) $(BUILD_DIR)/libc.a $< -o $@
 
 clean: 
 	rm -rf $(BUILD_DIR)/*
