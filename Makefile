@@ -9,7 +9,7 @@ IFLAGS=-Isrc/stdlib -Isrc/syscall
 
 .PHONY: all
 
-all: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm # $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/string.asm
+all: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm # $(BUILD_DIR)/malloc.asm 
 
 $(BUILD_DIR)/syscall.asm: src/syscall/syscall.c src/syscall/syscall.h
 	clang -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
