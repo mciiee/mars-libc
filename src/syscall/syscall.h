@@ -27,7 +27,7 @@ enum SyscallNumber : int {
 
 int syscall(enum SyscallNumber n, ...);
 
-// For internal use
+// For internal (mis-)use
 #ifdef _LIBC_IMPLEMENTATION
 _Noreturn void _syscall_exit(int code);
 _Noreturn void _syscall_abort(void);

@@ -8,7 +8,7 @@
 // $4-$7 : $a0-$a3
 // $16-$23 : $s0-$s7
 
-// Reserved for future (mis-)use
+[[maybe_unused]]
 static inline int syscall0(int n) {
     int ret;
     __asm__ volatile(
@@ -22,6 +22,7 @@ static inline int syscall0(int n) {
     return ret;
 }
 
+[[maybe_unused]]
 static inline int syscall1(int n, int arg) {
   int ret;
   __asm__ volatile(
@@ -36,6 +37,7 @@ static inline int syscall1(int n, int arg) {
   return ret;
 }
 
+[[maybe_unused]]
 static inline int syscall2(int n, int a0, int a1) {
   int ret;
   __asm__ volatile(
@@ -51,6 +53,7 @@ static inline int syscall2(int n, int a0, int a1) {
   return ret;
 }
 
+[[maybe_unused]]
 static inline int syscall3(int n, int a0, int a1, int a2) {
   int ret;
   __asm__ volatile(
@@ -84,6 +87,39 @@ static inline int syscall4(int n, int a0, int a1, int a2, int a3) {
   return ret;
 }
 
+static unsigned short syscall_arg_num(enum SyscallNumber n) {
+  switch (n) {
+    case SYS_EXIT:
+    case SYS_READ_INT:
+    case SYS_READ_FLOAT:
+    case SYS_READ_DOUBLE:
+    case SYS_READ_CHAR:
+      return 0;
+    case SYS_PRINT_INT:
+    case SYS_PRINT_STRING:
+    case SYS_SBRK:
+    case SYS_PRINT_CHAR:
+    case SYS_CLOSE:
+    case SYS_EXIT2:
+    case SYS_PRINT_INT_HEX:
+    case SYS_PRINT_INT_BINARY:
+    case SYS_PRINT_INT_UNSINGED:
+      return 1;
+    case SYS_READ_STRING:
+      return 2;
+    case SYS_OPEN:
+    case SYS_READ:
+    case SYS_WRITE:
+      return 3;
+    // Floating-point syscalls are not yet implemented
+    case SYS_PRINT_FLOAT:
+    case SYS_PRINT_DOUBLE:
+      break;
+    }
+  return (unsigned short)(-1);
+}
+
+// TODO: Implment floating-point stuff
 int syscall(enum SyscallNumber n, ...) {
     va_list ap;
     va_start(ap, n);
@@ -107,11 +143,12 @@ void _syscall_abort(void) {
   __builtin_unreachable();
 }
 
-
-void * _syscall_sbrk(size_t num) {
+void* _syscall_sbrk(size_t num) {
   int ret = syscall1(9, num);
   return (void*)ret;
 }
+
+
 
 void mars_print_int(int input) {
   (void)syscall1(SYS_PRINT_INT, input);
@@ -125,10 +162,11 @@ int mars_read_int(void) {
   return syscall0(SYS_READ_INT);
 }
 
-void mars_read_string(char *buffer, int bufferSize) {
-  (void)syscall2(SYS_READ_STRING, (int)buffer, bufferSize);
+void mars_read_string(char *buf, int bufSize) {
+  (void)syscall2(SYS_READ_STRING, (int)buf, bufSize);
 }
 
+// More to be added later(interrupts and stuff)
 void *mars_sbrk(size_t num) {
   return _syscall_sbrk(num);
 }
@@ -144,7 +182,7 @@ void mars_print_char(char c) {
 }
 
 char mars_read_char(void) {
-  return syscall0(SYS_READ_CHAR);
+  return (char)syscall0(SYS_READ_CHAR);
 }
 
 [[noreturn]]
@@ -154,16 +192,19 @@ void mars_exit2(int code) {
 }
 
 void mars_print_int_hex(int input) {
-  syscall1(SYS_PRINT_INT_HEX, input);
+  (void)syscall1(SYS_PRINT_INT_HEX, input);
 }
 void mars_print_int_bin(int input) {
-  syscall1(SYS_PRINT_INT_BINARY, input);
+  (void)syscall1(SYS_PRINT_INT_BINARY, input);
 }
 void mars_print_int_unsigned(int input) {
-  syscall1(SYS_PRINT_INT_UNSINGED, input);
+  (void)syscall1(SYS_PRINT_INT_UNSINGED, input);
 }
 
 
+// Same as [mars_sbrk]
+[[maybe_unused]]
 void *sbrk(size_t size) {
   return mars_sbrk(size);
 }
+
