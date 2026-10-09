@@ -1,5 +1,5 @@
-#ifndef MARS_STRING_H
-#define MARS_STRING_H
+#ifndef _MARS_LIBC_STRING_H
+#define _MARS_LIBC_STRING_H
 
 #include "stddef.h"
 

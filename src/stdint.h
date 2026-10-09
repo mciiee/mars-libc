@@ -1,5 +1,5 @@
-#ifndef _MARS_STDINT_H
-#define _MARS_STDINT_H
+#ifndef _MARS_LIBC_STDINT_H
+#define _MARS_LIBC_STDINT_H
 
 #define INT8_MAX    127
 #define INT16_MAX   32767

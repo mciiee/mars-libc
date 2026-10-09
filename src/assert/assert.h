@@ -1,5 +1,5 @@
-#ifndef MARS_LIBC_ASSERT_H
-#define MARS_LIBC_ASSERT_H
+#ifndef _MARS_LIBC_ASSERT_H
+#define _MARS_LIBC_ASSERT_H
 
 #ifdef NDEBUG
 #define assert(expr) ((void)(0))

@@ -1,5 +1,5 @@
-#ifndef MARS_STDDEF_H
-#define MARS_STDDEF_H
+#ifndef _MARS_LIBC_STDDEF_H
+#define _MARS_LIBC_STDDEF_H
 
 #ifndef NULL
 #if __STDC_VERSION__ >= 202311L

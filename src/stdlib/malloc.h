@@ -1,5 +1,5 @@
-#ifndef MARS_LIBC_MALLOC_H
-#define MARS_LIBC_MALLOC_H
+#ifndef _MARS_LIBC_MALLOC_H
+#define _MARS_LIBC_MALLOC_H
 
 #include "stddef.h"
 
