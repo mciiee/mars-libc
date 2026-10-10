@@ -87,6 +87,7 @@ static inline int syscall4(int n, int a0, int a1, int a2, int a3) {
   return ret;
 }
 
+[[maybe_unused]]
 static unsigned short syscall_arg_num(enum SyscallNumber n) {
   switch (n) {
     case SYS_EXIT:
@@ -144,7 +145,7 @@ void _syscall_abort(void) {
 }
 
 void* _syscall_sbrk(size_t num) {
-  int ret = syscall1(9, num);
+  int ret = syscall1(9, (int)num);
   return (void*)ret;
 }
 
