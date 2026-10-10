@@ -15,6 +15,7 @@ void* malloc(size_t size);
 void free(void* ptr);
 
 #ifdef MARS_LIBC_IMPLEMENTATION
+void _libc_stdlib_init(void);
 #include "malloc.h"
 #endif
 #endif

@@ -61,6 +61,6 @@ void quick_exit(int code) {
 }
 
 
-inline void _libc_stdlib_init(void) {
+void _libc_stdlib_init(void) {
   _malloc_init();
 }

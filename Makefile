@@ -6,16 +6,18 @@ TEST_DIR=test
 
 WFLAGS=-Wall -Wconversion -Wshadow
 DFLAGS=-DMARS_LIBC_IMPLEMENTATION -DMARS_LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE -DMARS_LIBC_SYSCALL_WRAPPERS_ENABLE
-CFLAGS=-std=c23 $(WFLAGS) $(DFLAGS)
-CLANG_FLAGS=-target mips -mllvm -disable-mips-delay-filler -mno-abicalls -G 0
+CFLAGS=-std=c23 $(WFLAGS) $(DFLAGS) -g0 -O1
+CLANG_FLAGS=-target mips -mllvm -disable-mips-delay-filler -fno-ident -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-strict-aliasing -fno-exceptions -ffreestanding -fno-debug-macro -Qy -mno-abicalls -G 0
 IFLAGS=-Isrc/stdlib -Isrc/syscall -I src/string
 
-
-.PHONY: all
-
+.PHONY: all asm static
 
 
-all: $(BUILD_DIR)/libc.a $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm $(BUILD_DIR)/malloc.asm 
+all: static asm
+
+static: $(BUILD_DIR)/libc.a
+
+asm: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/_init.asm $(BUILD_DIR)/_start.asm
 
 $(BUILD_DIR)/syscall.asm: src/syscall/syscall.c src/syscall/syscall.h
 	$(CC) -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
@@ -32,6 +34,12 @@ $(BUILD_DIR)/string.asm: src/string/string.c src/string/string.h
 $(BUILD_DIR)/assert.asm: src/assert/assert.c src/assert/assert.h
 	$(CC) -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
 
+
+$(BUILD_DIR)/_init.asm: src/internals/runtime/__libc_init.c
+	$(CC) -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
+
+$(BUILD_DIR)/_start.asm: src/internals/runtime/_start.asm
+	cp $< $@
 
 $(BUILD_DIR)/libc.a: $(BUILD_DIR)/syscall.o $(BUILD_DIR)/stdlib.o $(BUILD_DIR)/assert.o $(BUILD_DIR)/string.o $(BUILD_DIR)/malloc.o
 	$(AR) -crs $@ $^
