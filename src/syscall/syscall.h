@@ -28,14 +28,14 @@ enum SyscallNumber : int {
 int syscall(enum SyscallNumber n, ...);
 
 // For internal (mis-)use
-#ifdef _LIBC_IMPLEMENTATION
+#ifdef MARS_LIBC_IMPLEMENTATION
 _Noreturn void _syscall_exit(int code);
 _Noreturn void _syscall_abort(void);
 void* _syscall_sbrk(size_t num);
 #endif
 
 // Almost verbatim MARS syscalls wrappers
-#ifdef _LIBC_SYSCALL_WRAPPERS_ENABLE
+#ifdef MARS_LIBC_SYSCALL_WRAPPERS_ENABLE
 void mars_print_int(int input);
 void mars_print_string(const char *str);
 int mars_read_int(void);
@@ -49,7 +49,7 @@ void mars_print_int_hex(int input);
 void mars_print_int_bin(int input);
 void mars_print_int_unsigned(int input);
 #endif
-#ifdef _LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE
+#ifdef MARS_LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE
 void *sbrk(size_t size);
 #endif
 #endif
