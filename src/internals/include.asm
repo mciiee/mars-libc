@@ -1,5 +1,4 @@
 .include "_init.asm"
-.include "_start.asm"
 
 .include "assert.asm"
 .include "malloc.asm"

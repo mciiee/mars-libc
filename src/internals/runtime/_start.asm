@@ -1,6 +1,5 @@
 .globl _start
-.extern __libc_init
-.extern main
+.include "include.asm"
 .text
 _start:
   addi $sp, $sp, -16
