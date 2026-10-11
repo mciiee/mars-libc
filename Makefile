@@ -17,7 +17,14 @@ all: static asm
 
 static: $(BUILD_DIR)/libc.a
 
-asm: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/_init.asm $(BUILD_DIR)/_start.asm
+# asm-strip: asm
+# 	for file in $(BUILD_DIR)/*.asm; do python scripts/strip.py $$file > $$file; done
+	 
+
+asm: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/_init.asm $(BUILD_DIR)/_start.asm $(BUILD_DIR)/include.asm
+	for file in $^; do \
+		python scripts/strip.py $$file && sed -i -f scripts/register_map.sed $$file ; \
+	done 
 
 $(BUILD_DIR)/syscall.asm: src/syscall/syscall.c src/syscall/syscall.h
 	$(CC) -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
@@ -39,6 +46,9 @@ $(BUILD_DIR)/_init.asm: src/internals/runtime/__libc_init.c
 	$(CC) -S $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
 
 $(BUILD_DIR)/_start.asm: src/internals/runtime/_start.asm
+	cp $< $@
+
+$(BUILD_DIR)/include.asm: src/internals/include.asm
 	cp $< $@
 
 $(BUILD_DIR)/libc.a: $(BUILD_DIR)/syscall.o $(BUILD_DIR)/stdlib.o $(BUILD_DIR)/assert.o $(BUILD_DIR)/string.o $(BUILD_DIR)/malloc.o
