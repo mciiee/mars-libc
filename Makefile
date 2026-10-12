@@ -8,7 +8,7 @@ WFLAGS=-Wall -Wconversion -Wshadow
 DFLAGS=-DMARS_LIBC_IMPLEMENTATION -DMARS_LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE -DMARS_LIBC_SYSCALL_WRAPPERS_ENABLE
 CFLAGS=-std=c23 $(WFLAGS) $(DFLAGS) -g0 -O1
 CLANG_FLAGS=-target mips -mllvm -disable-mips-delay-filler -fno-ident -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-strict-aliasing -fno-exceptions -ffreestanding -fno-debug-macro -Qy -mno-abicalls -G 0
-IFLAGS=-Isrc/stdlib -Isrc/syscall -I src/string
+IFLAGS=-Isrc/stdlib -Isrc/syscall -Isrc/string -Isrc/assert -Isrc/internals
 
 .PHONY: all asm static
 
