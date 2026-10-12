@@ -23,7 +23,7 @@ static: $(BUILD_DIR)/libc.a
 
 asm: $(BUILD_DIR)/syscall.asm $(BUILD_DIR)/stdlib.asm $(BUILD_DIR)/assert.asm $(BUILD_DIR)/string.asm $(BUILD_DIR)/malloc.asm $(BUILD_DIR)/_init.asm $(BUILD_DIR)/_start.asm $(BUILD_DIR)/include.asm
 	for file in $^; do \
-		python scripts/strip.py $$file && sed -i -f scripts/register_map.sed $$file ; \
+		sed -i -f scripts/register_map.sed -f scripts/directive_map.sed $$file && python scripts/strip.py $$file; \
 	done 
 
 $(BUILD_DIR)/syscall.asm: src/syscall/syscall.c src/syscall/syscall.h
