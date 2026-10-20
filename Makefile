@@ -6,7 +6,7 @@ SCRIPTS_DIR=scripts
 
 WFLAGS=-Wall -Wconversion -Wshadow
 DFLAGS=-DMARS_LIBC_IMPLEMENTATION -DMARS_LIBC_GENERAL_SYSCALL_WRAPPER_ENABLE -DMARS_LIBC_SYSCALL_WRAPPERS_ENABLE
-CFLAGS=-std=c23 $(WFLAGS) $(DFLAGS) -g0 -O1
+CFLAGS=-std=c23 $(WFLAGS) $(DFLAGS)
 CLANG_FLAGS=-target mips -mllvm -disable-mips-delay-filler -fno-ident -fno-stack-protector -fno-asynchronous-unwind-tables -fno-unwind-tables -fno-strict-aliasing -fno-exceptions -ffreestanding -fno-debug-macro -Qy -mno-abicalls -G 0 -membedded-data
 IFLAGS=-Isrc/stdlib -Isrc/syscall -Isrc/string -Isrc/assert -Isrc/internals
 
@@ -70,7 +70,7 @@ $(BUILD_DIR)/assert.o: src/assert/assert.c src/assert/assert.h
 	$(CC) -c $(CFLAGS) $(CLANG_FLAGS) $(IFLAGS) $< -o $@
 
 $(BUILD_DIR)/preproc: $(SCRIPTS_DIR)/preproc.c
-	$(CC) $(CFLAGS) -march=x86-64 $< -o $@
+	$(CC) $(CFLAGS) -march=x86-64 -g3 $< -o $@
 # $(BUILD_DIR)/test: $(TEST_DIR)/test.c $(BUILD_DIR)/libc.a
 # 	$(CC) $(CFLAGS) -nostdlib $(CLANG_FLAGS) $(IFLAGS) $(BUILD_DIR)/libc.a $< -o $@
 
