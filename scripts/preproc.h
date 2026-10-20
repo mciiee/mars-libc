@@ -26,7 +26,7 @@ enum TokenType: uint16_t {
   TokenType_PAREN_OPEN,
   TokenType_PAREN_CLOSE,
 
-  TokenType_COMMENT_START,
+  TokenType_COMMENT,
 
   TokenType_MINUS,
   TokenType_COMMA,
@@ -50,7 +50,7 @@ enum TokenFlags: uint16_t {
 };
 
 union TokenData {
-  const char *str;
+  char *str;
   char ch;
   enum Registers reg;
 };
@@ -67,6 +67,25 @@ typedef struct TokenList {
   size_t capacity;
   size_t occupied;
 } TokenList;
+
+typedef struct CharStack {
+  char *str;
+  size_t capacity;
+  size_t occupied;
+} CharStack;
+
+typedef struct String {
+  size_t size;
+  size_t occupied;
+  char *str;
+} String;
+
+static constexpr Token TOKEN_UNKNOWN = {
+  .type = TokenType_UNKNOWN,
+  .flags = TokenFlag_NONE,
+  .data.ch = '\0',
+};
+
 
 static constexpr Token TOKEN_NEWLINE = {
   .type = TokenType_NEWLINE,
@@ -91,6 +110,19 @@ static constexpr Token TOKEN_PAREN_CLOSE = {
   .type = TokenType_PAREN_CLOSE,
   .flags = TokenFlag_NONE,
   .data.ch = ')'
+};
+
+static constexpr Token TOKEN_COMMA = {
+  .type = TokenType_COMMA,
+  .flags = TokenFlag_NONE,
+  .data.ch = ','
+};
+
+
+static constexpr Token TOKEN_EOF = {
+  .type = TokenType_EOF,
+  .flags = TokenFlag_NONE,
+  .data.ch = -1,
 };
 
 static const Token TOKEN_TEXT_SEGMENT = {
